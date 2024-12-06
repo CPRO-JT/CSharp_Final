@@ -13,7 +13,7 @@ namespace MaintenanceApp
         public MainWindow()
         {
             InitializeComponent();
-            applianceManager = ApplianceManager.getInstance();
+            applianceManager = new ApplianceManager();
             Appliances = new ObservableCollection<Appliance>(applianceManager.GetAllAppliances());
             ApplianceDataGrid.ItemsSource = Appliances;
         }
@@ -53,9 +53,11 @@ namespace MaintenanceApp
             if (ApplianceDataGrid.SelectedItem is Appliance selectedAppliance)
             {
                 //System.Windows.MessageBox.Show(selectedAppliance.Name);
-                var editingWindow = new ApplianceManagementWindow(selectedAppliance); // Assuming AddApplianceWindow can also handle edits.
-                editingWindow.ShowDialog();
-                RefreshAppliances();
+                var editingWindow = new ApplianceManagementWindow(selectedAppliance, applianceManager); // Assuming AddApplianceWindow can also handle edits.
+                if (editingWindow.ShowDialog() == true)
+                {
+                    RefreshAppliances();
+                }
             }
             else
             {
@@ -87,7 +89,7 @@ namespace MaintenanceApp
 
         private void AddAppliance_Click(object sender, RoutedEventArgs e)
         {
-            var applianceWindow = new ApplianceManagementWindow();
+            var applianceWindow = new ApplianceManagementWindow(applianceManager);
             applianceWindow.ShowDialog();
             RefreshAppliances();
         }

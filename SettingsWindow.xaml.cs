@@ -9,7 +9,7 @@ namespace MaintenanceApp
     public partial class SettingsWindow : Window
     {
         private WebSocketServer webSocketServer;
-        private ApplianceManager applianceManager = ApplianceManager.getInstance();
+        private ApplianceManager applianceManager = new ApplianceManager();
 
         public SettingsWindow()
         {

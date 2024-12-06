@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 public class WebSocketServer
 {
-    public string StoragePath { get; set; } = Environment.GetEnvironmentVariable("USERPROFILE");
+    public string StoragePath { get; set; } = $"{Environment.CurrentDirectory}\\amt_server_settings.json";
     public string ServerIP { get; set; } = "127.0.0.1";
     public int ServerPort { get; set; } = 42069;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -7,9 +8,8 @@ public class ApplianceManager
 {
     private string ApplianceFile = $"{Environment.GetEnvironmentVariable("USERPROFILE")}\\amt_appliances.json";
     private List<Appliance> appliances;
-    private static ApplianceManager INSTANCE;
 
-    private ApplianceManager()
+    public ApplianceManager()
     {
         if (File.Exists(ApplianceFile))
         {
@@ -20,15 +20,6 @@ public class ApplianceManager
         {
             appliances = new List<Appliance>();
         }
-    }
-
-    public static ApplianceManager getInstance()
-    {
-        if (INSTANCE == null)
-        {
-            INSTANCE = new ApplianceManager();
-        }
-        return INSTANCE;
     }
 
     public List<Appliance> GetAllAppliances() => appliances;
@@ -71,5 +62,5 @@ public class Appliance
     public string ModelName { get; set; }
     public string SerialNumber { get; set; }
     public string Details { get; set; }
-    public List<MaintenanceTask> Tasks { get; set; } = new List<MaintenanceTask>();
+    public ObservableCollection<MaintenanceTask> Tasks { get; set; } = new ObservableCollection<MaintenanceTask>();
 }

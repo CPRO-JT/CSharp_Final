@@ -5,61 +5,47 @@ namespace MaintenanceApp
     public partial class TaskWindow : Window
     {
         public MaintenanceTask Task { get; private set; }
-        private MaintenanceTask _editingTask;
-        private bool _isEditing;
+        private MaintenanceTaskManager _taskManager = new MaintenanceTaskManager();
+        private Appliance _appliance { get; set; }
+        private ApplianceManager applianceManager = new ApplianceManager();
 
-        public TaskWindow()
+        public TaskWindow(Appliance appliance)
         {
             InitializeComponent();
-        }
-
-        public TaskWindow(MaintenanceTask taskToEdit) : this()
-        {
-            _isEditing = true;
-            _editingTask = taskToEdit;
-
-            // Pre-fill fields with the task's details
-            TaskNameTextBox.Text = taskToEdit.Name;
-            DescriptionTextBox.Text = taskToEdit.Description;
-            DueDateTextBox.SelectedDate = taskToEdit.DueDate;
-            FrequencyTextBox.Text = taskToEdit.Frequency.Days.ToString();
+            _appliance = appliance;
+            Task = new MaintenanceTask();
         }
 
         private void SaveTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_isEditing)
+            if (string.IsNullOrWhiteSpace(TaskNameTextBox.Text) ||
+                string.IsNullOrWhiteSpace(DueDateTextBox.Text) ||
+                string.IsNullOrWhiteSpace(FrequencyTextBox.Text))
             {
-                // Update the existing task
-                _editingTask.Name = TaskNameTextBox.Text;
-                _editingTask.Description = DescriptionTextBox.Text;
-                _editingTask.DueDate = DueDateTextBox.SelectedDate ?? DateTime.Now; // Default to today if null
-                _editingTask.Frequency = TimeSpan.FromDays(int.TryParse(FrequencyTextBox.Text, out var freq) ? freq : 0);
-
-                System.Windows.MessageBox.Show("Task updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Please fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
+
+            // Create the new task
+            Task = new MaintenanceTask
             {
-                if (string.IsNullOrWhiteSpace(TaskNameTextBox.Text) ||
-                string.IsNullOrWhiteSpace(DescriptionTextBox.Text) ||
-                string.IsNullOrWhiteSpace(FrequencyTextBox.Text) || string.IsNullOrWhiteSpace(DueDateTextBox.Text))
-                {
-                    System.Windows.MessageBox.Show("Please fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                Name = TaskNameTextBox.Text,
+                Frequency = TimeSpan.FromDays(int.TryParse(FrequencyTextBox.Text, out var freq) ? freq : 0),
+                DueDate = DueDateTextBox.SelectedDate.GetValueOrDefault(DateTime.Now.AddDays(7)),
+                Description = DescriptionTextBox.Text,
+            };
 
-                Task = new MaintenanceTask
-                {
-                    Name = TaskNameTextBox.Text,
-                    Frequency = TimeSpan.FromDays(int.Parse(FrequencyTextBox.Text)),
-                    DueDate = DueDateTextBox.SelectedDate.GetValueOrDefault(DateTime.Now.AddDays(7)),
-                    Description = DescriptionTextBox.Text,
-                };
+            // Add the task to the appliance's task list
+            _appliance.Tasks.Add(Task);
 
-                System.Windows.MessageBox.Show("Task added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            // Update the appliance in the ApplianceManager
+            applianceManager.UpdateAppliance(_appliance);
+
+            System.Windows.MessageBox.Show("Task added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
             DialogResult = true;
             Close();
         }
+
     }
 }
