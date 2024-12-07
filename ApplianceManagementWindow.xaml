@@ -1,33 +1,169 @@
 <Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:MaintenanceApp" mc:Ignorable="av" x:Class="MaintenanceApp.ApplianceManagementWindow"
-        Title="Appliance Management" Height="450" Width="600" Background="#272537" SizeToContent="WidthAndHeight" Topmost="True" WindowStartupLocation="CenterOwner" UseLayoutRounding="False" MinWidth="600" MinHeight="450" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:MaintenanceApp"
+    mc:Ignorable="av"
+    x:Class="MaintenanceApp.ApplianceManagementWindow"
+    Title="Appliance Management" 
+    Height="450" Width="600" 
+    Background="#272537" 
+    SizeToContent="WidthAndHeight" 
+    Topmost="True" 
+    WindowStartupLocation="CenterOwner" 
+    UseLayoutRounding="False" 
+    MinWidth="600" MinHeight="450" 
+    HorizontalContentAlignment="Stretch" 
+    VerticalContentAlignment="Stretch" 
+    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
+    <!-- Main Grid for organizing layout -->
     <Grid Margin="10">
-        <Image HorizontalAlignment="Left" Height="128" VerticalAlignment="Top" Width="128" Source="/ApplianceHoldImg.jpg" Margin="0,0,10,0"/>
 
-        <TextBox x:Name="ApplianceNameBox" Margin="134,0,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="363" Height="25" FontSize="20" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontFamily="Arial" Text="ChangeMyName" />
+        <!-- Appliance Image -->
+        <Image 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Height="128" 
+            Width="128" 
+            Source="/ApplianceHoldImg.jpg" 
+            Margin="0,0,10,0"/>
 
-        <Button Style="{DynamicResource btnStyle}" Content="Done" Width="60" HorizontalAlignment="Right" Click="SaveAppliance_Click" Height="30" VerticalAlignment="Top" MinWidth="30" Margin="10,0,0,10"/>
+        <!-- TextBox for Appliance Name -->
+        <TextBox 
+            x:Name="ApplianceNameBox" 
+            Margin="134,0,0,0" 
+            TextWrapping="Wrap" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="363" 
+            Height="25" 
+            FontSize="20" 
+            Background="{x:Null}" 
+            BorderBrush="{x:Null}" 
+            Foreground="White" 
+            FontFamily="Arial" 
+            Text="ChangeMyName" />
 
-        <StackPanel Background="#272537" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="128" Height="281" Margin="0,10,10,0" >
-            <TextBlock Text="Brand" FontFamily="Arial" FontSize="14" Foreground="#FFFBF7F7" />
-            <TextBox x:Name="BrandBox" Margin="0,0,0,10" Background="#4C000000" Foreground="White" BorderThickness="0,0,0,1" BorderBrush="Black" FontFamily="Arial" />
+        <!-- Done Button -->
+        <Button 
+            Style="{DynamicResource btnStyle}" 
+            Content="Done" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Top" 
+            Click="SaveAppliance_Click" 
+            Height="30" 
+            MinWidth="30" 
+            Width="60" 
+            Margin="10,0,0,10"/>
 
-            <TextBlock Text="Model Name" FontFamily="Arial" FontSize="14" Foreground="#FFFBF7F7" />
-            <TextBox x:Name="ModelNameBox" Margin="0,0,0,10" Background="#4C000000" BorderBrush="Black" Foreground="White" BorderThickness="0,0,0,1" FontFamily="Arial" />
+        <!-- StackPanel for Appliance Details (Brand, Model, etc.) -->
+        <StackPanel 
+            Background="#272537" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Bottom" 
+            Width="128" 
+            Height="281" 
+            Margin="0,10,10,0">
 
-            <TextBlock Text="Model Number" FontFamily="Arial" FontSize="14" Foreground="#FFFBF7F7" />
-            <TextBox x:Name="ModelNumberBox" Margin="0,0,0,10" Background="#4C000000" Foreground="White" BorderBrush="Black" BorderThickness="0,0,0,1" FontFamily="Arial" />
+            <!-- Brand -->
+            <TextBlock 
+                Text="Brand" 
+                FontFamily="Arial" 
+                FontSize="14" 
+                Foreground="#FFFBF7F7" />
+            <TextBox 
+                x:Name="BrandBox" 
+                Margin="0,0,0,10" 
+                Background="#4C000000" 
+                Foreground="White" 
+                BorderThickness="0,0,0,1" 
+                BorderBrush="Black" 
+                FontFamily="Arial" />
 
-            <TextBlock Text="Serial Number" FontFamily="Arial" FontSize="14" Foreground="#FFFBF7F7" />
-            <TextBox x:Name="SerialNumberBox" Margin="0,0,0,10" Background="#4C000000" BorderBrush="Black" Foreground="White" BorderThickness="0,0,0,1" FontFamily="Arial" />
+            <!-- Model Name -->
+            <TextBlock 
+                Text="Model Name" 
+                FontFamily="Arial" 
+                FontSize="14" 
+                Foreground="#FFFBF7F7" />
+            <TextBox 
+                x:Name="ModelNameBox" 
+                Margin="0,0,0,10" 
+                Background="#4C000000" 
+                BorderBrush="Black" 
+                Foreground="White" 
+                BorderThickness="0,0,0,1" 
+                FontFamily="Arial" />
 
-            <TextBlock Text="Details" FontFamily="Arial" FontSize="14" Foreground="#FFFBF7F7" />
-            <TextBox x:Name="DetailsBox" Margin="0,0,0,10" Background="#33000000" BorderBrush="Black" Foreground="White" FontFamily="Arial" Height="101" TextWrapping="Wrap"/>
+            <!-- Model Number -->
+            <TextBlock 
+                Text="Model Number" 
+                FontFamily="Arial" 
+                FontSize="14" 
+                Foreground="#FFFBF7F7" />
+            <TextBox 
+                x:Name="ModelNumberBox" 
+                Margin="0,0,0,10" 
+                Background="#4C000000" 
+                Foreground="White" 
+                BorderBrush="Black" 
+                BorderThickness="0,0,0,1" 
+                FontFamily="Arial" />
+
+            <!-- Serial Number -->
+            <TextBlock 
+                Text="Serial Number" 
+                FontFamily="Arial" 
+                FontSize="14" 
+                Foreground="#FFFBF7F7" />
+            <TextBox 
+                x:Name="SerialNumberBox" 
+                Margin="0,0,0,10" 
+                Background="#4C000000" 
+                BorderBrush="Black" 
+                Foreground="White" 
+                BorderThickness="0,0,0,1" 
+                FontFamily="Arial" />
+
+            <!-- Details -->
+            <TextBlock 
+                Text="Details" 
+                FontFamily="Arial" 
+                FontSize="14" 
+                Foreground="#FFFBF7F7" />
+            <TextBox 
+                x:Name="DetailsBox" 
+                Margin="0,0,0,10" 
+                Background="#33000000" 
+                BorderBrush="Black" 
+                Foreground="White" 
+                FontFamily="Arial" 
+                Height="101" 
+                TextWrapping="Wrap"/>
         </StackPanel>
 
-        <DataGrid x:Name="TasksDataGrid" Background="#4CFFFFFF" Foreground="Black" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="360" Width="430" Margin="10,10,0,0" ContextMenuOpening="TasksDataGrid_ContextMenuOpening" HeadersVisibility="Column" ColumnWidth="Auto" AutoGenerateColumns="False" FontFamily="Arial" IsReadOnly="True" ItemsSource="{Binding Tasks}" >
+        <!-- DataGrid for Maintenance Tasks -->
+        <DataGrid 
+            x:Name="TasksDataGrid" 
+            Background="#4CFFFFFF" 
+            Foreground="Black" 
+            BorderBrush="{x:Null}" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Bottom" 
+            Height="360" 
+            Width="430" 
+            Margin="10,10,0,0" 
+            ContextMenuOpening="TasksDataGrid_ContextMenuOpening" 
+            HeadersVisibility="Column" 
+            ColumnWidth="Auto" 
+            AutoGenerateColumns="False" 
+            FontFamily="Arial" 
+            IsReadOnly="True" 
+            ItemsSource="{Binding Tasks}">
+
+            <!-- Columns for Task Details -->
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Task Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Frequency (Days)" Binding="{Binding Frequency.Days}" />

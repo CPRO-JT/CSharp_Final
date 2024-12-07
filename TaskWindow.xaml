@@ -1,24 +1,46 @@
 <Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="MaintenanceApp.TaskWindow"
-        Title="Edit Task" Height="300" Width="236" Background="#272537" SizeToContent="WidthAndHeight" Topmost="True" WindowStartupLocation="CenterOwner" UseLayoutRounding="False" MinHeight="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="av"
+    x:Class="MaintenanceApp.TaskWindow"
+    Title="Edit Task" 
+    Height="300" 
+    Width="236"
+    Background="#272537" 
+    SizeToContent="WidthAndHeight" 
+    Topmost="True" 
+    WindowStartupLocation="CenterOwner" 
+    UseLayoutRounding="False" 
+    MinHeight="0" 
+    HorizontalContentAlignment="Stretch" 
+    VerticalContentAlignment="Stretch" 
+    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
     <Grid Margin="10">
+
         <StackPanel>
+
+            <!-- Task Name TextBlock and TextBox -->
             <TextBlock Text="Task Name" Foreground="White" FontFamily="Arial" FontSize="14" MinWidth="200" />
-            <TextBox x:Name="TaskNameTextBox" Margin="0,0,0,10" TextBlock.FontFamily="Arial" MinWidth="200" />
+            <TextBox x:Name="TaskNameTextBox" Margin="0,0,0,10" FontFamily="Arial" MinWidth="200" />
 
+            <!-- Frequency in Days TextBlock and TextBox -->
             <TextBlock Text="Frequency in Days" Foreground="White" FontFamily="Arial" FontSize="14" MinWidth="200" />
-            <TextBox x:Name="FrequencyTextBox" Margin="0,0,0,10" TextBlock.FontFamily="Arial" MinWidth="200" />
+            <TextBox x:Name="FrequencyTextBox" Margin="0,0,0,10" FontFamily="Arial" MinWidth="200" />
 
+            <!-- Due Date TextBlock and DatePicker -->
             <TextBlock Text="Due Date" Foreground="White" FontFamily="Arial" FontSize="14" MinWidth="200" />
-            <DatePicker x:Name="DueDateTextBox" Margin="0,0,0,10" TextBlock.FontFamily="Arial" MinWidth="200" />
+            <DatePicker x:Name="DueDateTextBox" Margin="0,0,0,10" FontFamily="Arial" MinWidth="200" />
 
+            <!-- Description TextBlock and TextBox -->
             <TextBlock Text="Description" Foreground="White" FontFamily="Arial" FontSize="14" MinWidth="200" />
-            <TextBox x:Name="DescriptionTextBox" Margin="0,0,0,10" Height="72" TextWrapping="Wrap" TextBlock.FontFamily="Arial" MinWidth="200" />
+            <TextBox x:Name="DescriptionTextBox" Margin="0,0,0,10" Height="72" TextWrapping="Wrap" FontFamily="Arial" MinWidth="200" />
 
+            <!-- Save Task Button -->
             <Button Style="{DynamicResource btnStyle}" x:Name="SaveTaskButton" Content="Save Task" Click="SaveTaskButton_Click" />
+
         </StackPanel>
     </Grid>
 </Window>
-   
