@@ -6,8 +6,8 @@ namespace MaintenanceApp
 {
     public partial class MainWindow : Window
     {
-        // Initialize WebSocketServer
-        public static WebSocketServer webSocketServer = new WebSocketServer();
+        // Initialize AMTWebSocketServer
+        public static AMTWebSocketServer webSocketServer = new AMTWebSocketServer();
 
         // Manages appliance data and actions like add, update, and delete
         private ApplianceManager applianceManager;
@@ -30,7 +30,7 @@ namespace MaintenanceApp
             // Bind the DataGrid to the ObservableCollection to display appliance data
             ApplianceDataGrid.ItemsSource = Appliances;
 
-            // Start the WebSocketServer
+            // Start the AMTWebSocketServer
             webSocketServer.Start();
         }
 

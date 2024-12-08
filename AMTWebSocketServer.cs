@@ -1,32 +1,79 @@
 ﻿using System;
 using System.IO;
-using System.Net.Sockets;
-using System.Net;
+using System.Windows;
 using Newtonsoft.Json;
-using System.Text.RegularExpressions;
-using System.Text;
+using WebSocketSharp;
+using WebSocketSharp.Server;
 
-public class WebSocketServer
+
+public class AMTWebSocketServer : WebSocketBehavior
 {
     // Set the storage path to the user home directory
     public string StoragePath { get; set; } = $"{Environment.GetEnvironmentVariable("USERPROFILE")}\\amt_server_settings.json";
     // Set the ip we listen on to a local loopback address and a funny joke
-    public string ServerIP { get; set; } = "127.42.0.69";
+    public string DefaultServerIP { get; set; } = "127.0.0.1";
+    public string ServerIP { get; set; } = "127.0.0.1";
     // Set the port we listen on to a funny joke
+    public int DefaultServerPort { get; set; } = 42069;
     public int ServerPort { get; set; } = 42069;
 
-    public WebSocketServer()
+    private WebSocketServer webSocketServer { get; set; }
+
+    public AMTWebSocketServer()
     {
-        LoadSettings(); // Load WebSocketServer settings
+        LoadSettings(); // Load AMTWebSocketServer settings
     }
 
     public void Start()
     {
         Thread t = new Thread(CreateServer); // create a new thread for the server
+        t.IsBackground = true;
         t.Start(); // start the thread
     }
 
-    private void CreateServer()
+    public void CreateServer()
+    {
+        try
+        {
+            webSocketServer = new WebSocketServer($"ws://{ServerIP}:{ServerPort}");
+            webSocketServer.AddWebSocketService<AMTWebSocketServer>("/amt");
+            webSocketServer.Start();
+            System.Windows.MessageBox.Show($"WebSocket Server is listening at ws://{ServerIP}:{ServerPort}");
+        }
+        catch (ArgumentException e)
+        {
+            System.Windows.MessageBox.Show($"Invalid ServerIP or ServerPort!\nRestoring default server settings!\n\n{e}");
+            ServerIP = DefaultServerIP;
+            ServerPort = DefaultServerPort;
+            SaveSettings();
+            CreateServer();
+        }
+    }
+
+    public void StopServer()
+    {
+        webSocketServer.Stop();
+    }
+
+    public void RestartServer()
+    {
+        StopServer();
+        Start();
+    }
+
+    protected override void OnMessage(MessageEventArgs e)
+    {
+        System.Windows.MessageBox.Show($"{e.Data}");
+        Send("Hello from AMT Desktop!");
+    }
+
+    protected override void OnOpen()
+    {
+        System.Windows.MessageBox.Show("Client Connected!");
+        Send("Hello from AMT Desktop!");
+    }
+
+    /*private void CreateServer()
     {
         // Set this to the background so it closes the server when the application closes.
         Thread.CurrentThread.IsBackground = true; 
@@ -121,7 +168,7 @@ public class WebSocketServer
                 Console.WriteLine(); // new line
             }
         }
-    }
+    }*/
 
     public void LoadSettings()
     {

@@ -10,7 +10,7 @@ namespace MaintenanceApp
     public partial class SettingsWindow : Window
     {
         // WebSocket server instance for handling server settings
-        private WebSocketServer webSocketServer = MainWindow.webSocketServer;
+        private AMTWebSocketServer webSocketServer = MainWindow.webSocketServer;
 
         // Appliance manager to manage appliance data
         private ApplianceManager applianceManager = new ApplianceManager();
@@ -20,7 +20,7 @@ namespace MaintenanceApp
         {
             InitializeComponent(); // Initializes the UI components defined in XAML
 
-            // Set initial values for server settings from the WebSocketServer instance.
+            // Set initial values for server settings from the AMTWebSocketServer instance.
             StoragePathBox.Text = webSocketServer.StoragePath;          //Displays the current storage path used by the WebSocket server
             ServerIPBox.Text = webSocketServer.ServerIP;                //shows the current IP address of the WebSocket server
             ServerPortBox.Text = webSocketServer.ServerPort.ToString(); //displays the server's port number
@@ -75,10 +75,15 @@ namespace MaintenanceApp
                     return;
                 }
                 webSocketServer.ServerPort = port; // Save the valid port.
+
             }
 
             // Save the settings to a file or database
             webSocketServer.SaveSettings();
+
+            // Restart the websocket server after saving changes
+            webSocketServer.RestartServer();
+
             // Show success message
             System.Windows.MessageBox.Show("Settings saved successfully.");
             Close(); // Close the settings window after saving the settings.
