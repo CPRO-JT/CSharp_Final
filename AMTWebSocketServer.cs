@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using System.Net.Sockets;
 using System.Windows;
+using MaintenanceApp;
 using Newtonsoft.Json;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -11,8 +14,8 @@ public class AMTWebSocketServer : WebSocketBehavior
     // Set the storage path to the user home directory
     public string StoragePath { get; set; } = $"{Environment.GetEnvironmentVariable("USERPROFILE")}\\amt_server_settings.json";
     // Set the ip we listen on to a local loopback address and a funny joke
-    public string DefaultServerIP { get; set; } = "127.0.0.1";
-    public string ServerIP { get; set; } = "127.0.0.1";
+    public string DefaultServerIP { get; set; }
+    public string ServerIP { get; set; }
     // Set the port we listen on to a funny joke
     public int DefaultServerPort { get; set; } = 42069;
     public int ServerPort { get; set; } = 42069;
@@ -21,11 +24,20 @@ public class AMTWebSocketServer : WebSocketBehavior
 
     public AMTWebSocketServer()
     {
+
         LoadSettings(); // Load AMTWebSocketServer settings
     }
 
     public void Start()
     {
+        using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+        {
+            socket.Connect("8.8.8.8", 65530);
+            IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+            DefaultServerIP = endPoint.Address.ToString();
+            ServerIP = endPoint.Address.ToString();
+        };
+
         Thread t = new Thread(CreateServer); // create a new thread for the server
         t.IsBackground = true;
         t.Start(); // start the thread
@@ -63,13 +75,28 @@ public class AMTWebSocketServer : WebSocketBehavior
 
     protected override void OnMessage(MessageEventArgs e)
     {
-        System.Windows.MessageBox.Show($"{e.Data}");
-        Send("Hello from AMT Desktop!");
+        String AMTOpCode = e.Data.Split("|")[0];
+        switch(AMTOpCode)
+        {
+            case "Sync":
+                SyncWithWebApp();
+                break;
+
+            case "Diff":
+                DiffWithWebApp();
+                break;
+
+            default:
+                Send(e.Data);
+                break;
+        }
+        //System.Windows.MessageBox.Show($"{AMTOpCode}\n{e.Data}");
+        //Send("Hello from AMT Desktop!");
     }
 
     protected override void OnOpen()
     {
-        System.Windows.MessageBox.Show("Client Connected!");
+        //System.Windows.MessageBox.Show("Client Connected!");
         Send("Hello from AMT Desktop!");
     }
 
@@ -172,9 +199,9 @@ public class AMTWebSocketServer : WebSocketBehavior
 
     public void LoadSettings()
     {
-        if (File.Exists("amt_server_settings.json")) // check for the file
+        if (File.Exists(StoragePath)) // check for the file
         {
-            var json = File.ReadAllText("amt_server_settings.json"); // read it if it exists
+            var json = File.ReadAllText(StoragePath); // read it if it exists
             var settings = JsonConvert.DeserializeObject<WebSocketServerSettings>(json); // convert the json to something we can use in C#
             if (settings != null) // if there are settings, set them to the current environment
             {
@@ -194,13 +221,18 @@ public class AMTWebSocketServer : WebSocketBehavior
             ServerPort = ServerPort
         };
         var json = JsonConvert.SerializeObject(settings, Newtonsoft.Json.Formatting.Indented); // turn it back into json
-        File.WriteAllText("amt_server_settings.json", json); // save the json settings to file
+        File.WriteAllText(StoragePath, json); // save the json settings to file
     }
 
     public void SyncWithWebApp()
     {
-        // Implementation for syncing with web app
         Console.WriteLine("Syncing data with web application...");
+        Send($"SyncResponse|{JsonConvert.SerializeObject(new ApplianceManager().GetAllAppliances(), Newtonsoft.Json.Formatting.None)}");
+    }
+
+    public void DiffWithWebApp()
+    {
+        Console.WriteLine("Not Yet Implemented!");
     }
 }
 
