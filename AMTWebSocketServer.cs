@@ -50,7 +50,7 @@ public class AMTWebSocketServer : WebSocketBehavior
             webSocketServer = new WebSocketServer($"ws://{ServerIP}:{ServerPort}");
             webSocketServer.AddWebSocketService<AMTWebSocketServer>("/amt");
             webSocketServer.Start();
-            System.Windows.MessageBox.Show($"WebSocket Server is listening at ws://{ServerIP}:{ServerPort}");
+            System.Windows.MessageBox.Show($"WebSocket Server is listening at ws://{ServerIP}:{ServerPort}/amt");
         }
         catch (ArgumentException e)
         {
